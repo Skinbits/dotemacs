@@ -5,4 +5,4 @@ emacs-desktop
 elpa
 history
 .emacs.desktop.lock
-ac-comphist
+ac-comphist.dat
