@@ -1,3 +1,5 @@
 .emacs.desktop
 tmp
 auto-save-list
+emacs-desktop
+elpa
