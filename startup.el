@@ -8,8 +8,8 @@
 (load-theme 'hc-zenburn)
 
 ;; M-x ido mode
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
+;; (smex-initialize)
+;; (global-set-key (kbd "M-x") 'smex)
 
 ;; configure encoding system
 (prefer-coding-system 'utf-8)
@@ -36,19 +36,21 @@
 ;; enable desktop mode
 (require 'desktop)
 (desktop-save-mode 1)
+(setq desktop-save t)
+(desktop-read)
 
-(setq desktop-path '("~/.emacs.d"))
+;; (setq desktop-path '("~/.emacs.d"))
 (setq desktop-dirname "~/.emacs.d")
 (setq desktop-base-file-name "emacs-desktop")
 
-;; Save desktop when exiting from emacs without asking for it
-(defun my-desktop-save ()
-	"Save the current desktop when exiting Emacs."
-  (interactive)
-  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
-  (if (eq (desktop-owner) (emacs-pid))
-      (desktop-save desktop-dirname)))
-(add-hook 'auto-save-hook 'my-desktop-save)
+;; ;; Save desktop when exiting from emacs without asking for it
+;; (defun my-desktop-save ()
+;; 	"Save the current desktop when exiting Emacs."
+;;   (interactive)
+;;   ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+;;   (if (eq (desktop-owner) (emacs-pid))
+;;       (desktop-save desktop-dirname)))
+;; (add-hook 'auto-save-hook 'my-desktop-save)
 
 ;; Change the face to something smaller
 (set-face-attribute 'default nil :font "Menlo-11")
@@ -221,6 +223,10 @@ This functions should be added to the hooks of major modes for programming."
 ;; add new lines on end of buffer with C-n
 ;; (setq next-line-add-newlines t)
 
+;; change exec path to use /usr/local/bin before everything
+(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+(setq exec-path (append '("/usr/local/bin") exec-path))
+
 (when (eq system-type 'darwin)
   (require 'ls-lisp)
   (defvar ls-lisp-use-insert-directory-program nil)
@@ -238,8 +244,8 @@ This functions should be added to the hooks of major modes for programming."
 
 (setq system-uses-terminfo nil)
 
-(require 'ido)
-(ido-mode t)
+;; (require 'ido)
+;; (ido-mode nil)
 
 (defun comment-or-uncomment-region-or-line ()
   "Like 'comment-or-uncomment-region', but if there's no mark \(that means no region\) apply comment-or-uncomment to the current line."
@@ -273,6 +279,21 @@ This functions should be added to the hooks of major modes for programming."
 
 ;; turn off toolbar
 (tool-bar-mode -1)
+
+;; Helm configuration
+(load "~/.emacs.d/heml.el")
+
+;; (global-set-key (kbd "C-c h") 'helm-mini)
+;; (require 'helm-config)
+;; (helm-mode 1)
+
+(setq inhibit-splash-screen t)
+
+;; ssh config mode
+(autoload 'ssh-config-mode "ssh-config-mode" t)
+(add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
+(add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 (provide 'startup)
 ;;; startup.el ends here
