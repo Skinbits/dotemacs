@@ -3,3 +3,6 @@ tmp
 auto-save-list
 emacs-desktop
 elpa
+history
+.emacs.desktop.lock
+ac-comphist
