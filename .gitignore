@@ -6,3 +6,6 @@ elpa
 history
 .emacs.desktop.lock
 ac-comphist.dat
+bookmarks
+projectile*
+tramp
