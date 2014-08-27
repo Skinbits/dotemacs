@@ -295,5 +295,8 @@ This functions should be added to the hooks of major modes for programming."
 (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
 (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
+;; enable projectile globaly
+(projectile-global-mode)
+(setq projectile-enable-caching t)
 (provide 'startup)
 ;;; startup.el ends here
