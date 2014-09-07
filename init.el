@@ -47,10 +47,15 @@ Return a list of installed PACKAGES or nil for every skipped package."
 
 (ensure-package-installed 'hc-zenburn-theme
 			  'magit
-			  'helm 'helm-flycheck
+			  'helm 'helm-flycheck 'heml-projectile
 			  'flycheck
 			  'dired-single
-			  'auto-complete 'auto-complete-c-headers
+			  'auto-complete 'auto-complete-c-headers 'ac-c-headers 'ac-helm
+			  'cyberpunk-theme 'dash 'epl 'git-commit-mode 'git-rebase-mode
+			  'gitconfig-mode 'go-eldoc 'go-mode 'go-projectile 'grandshell-theme
+			  'hc-zenburn-theme 'jinja2-mode 'magit-tramp 'moe-theme 'monokai-theme
+			  'pkg-info 'rainbow-delimiters 's 'smartparens 'smex 'ssh-config-mode
+			  'web-mode 'yaml-mode
 			  'projectile 'helm-projectile) ;  --> (nil nil) if iedit and magit are already installed
 
 ;; activate installed packages
