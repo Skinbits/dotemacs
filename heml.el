@@ -54,6 +54,11 @@
                                         ; useful in helm-mini that lists buffers
  )
 
+;; ac-helm config
+(require 'ac-helm)
+(global-set-key (kbd "C-:") 'ac-complete-with-helm)
+(define-key ac-complete-mode-map (kbd "C-:") 'ac-complete-with-helm)
+
 ;; Save current position to mark ring when jumping to a different place
 (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
 

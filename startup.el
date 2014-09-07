@@ -5,7 +5,12 @@
 
 ;;; Code:
 ;; load my color theme
-(load-theme 'hc-zenburn)
+;;(load-theme 'hc-zenburn)
+;; (load-theme 'cyberpunk t)
+(require 'moe-theme)
+(moe-dark)
+;; (load-theme 'grandshell t)
+;; (load-theme 'monokai)
 
 ;; M-x ido mode
 ;; (smex-initialize)
@@ -37,11 +42,11 @@
 (require 'desktop)
 (desktop-save-mode 1)
 (setq desktop-save t)
-(desktop-read)
 
 ;; (setq desktop-path '("~/.emacs.d"))
 (setq desktop-dirname "~/.emacs.d")
 (setq desktop-base-file-name "emacs-desktop")
+(desktop-read)
 
 ;; ;; Save desktop when exiting from emacs without asking for it
 ;; (defun my-desktop-save ()
@@ -298,5 +303,14 @@ This functions should be added to the hooks of major modes for programming."
 ;; enable projectile globaly
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+
+;; enable smartparens
+(require 'smartparens-config)
+(smartparens-global-mode)
+
+;; enable rainbow-delimiters
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
+
 (provide 'startup)
 ;;; startup.el ends here
