@@ -54,6 +54,9 @@
                                         ; useful in helm-mini that lists buffers
  )
 
+;; force projectile to use helm
+(setq projectile-completion-system 'helm)
+
 ;; ac-helm config
 (require 'ac-helm)
 (global-set-key (kbd "C-:") 'ac-complete-with-helm)

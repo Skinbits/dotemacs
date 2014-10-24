@@ -15,7 +15,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
+    ("1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -23,7 +23,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :stipple nil :background "gray13" :foreground "#bdbdb3" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "nil" :family "Menlo")))))
 
 ;; install needed packages automatcly
 (defun ensure-package-installed (&rest packages)
@@ -45,9 +45,12 @@ Return a list of installed PACKAGES or nil for every skipped package."
 (or (file-exists-p package-user-dir)
     (package-refresh-contents))
 
+;; activate installed packages
+(package-initialize)
+
 (ensure-package-installed 'hc-zenburn-theme
 			  'magit
-			  'helm 'helm-flycheck 'heml-projectile
+			  'helm 'helm-flycheck 'helm-projectile
 			  'flycheck
 			  'dired-single
 			  'auto-complete 'auto-complete-c-headers 'ac-c-headers 'ac-helm
@@ -58,8 +61,6 @@ Return a list of installed PACKAGES or nil for every skipped package."
 			  'web-mode 'yaml-mode
 			  'projectile 'helm-projectile) ;  --> (nil nil) if iedit and magit are already installed
 
-;; activate installed packages
-(package-initialize)
-
 (provide 'init)
 ;;; init.el ends here
+(put 'downcase-region 'disabled nil)

@@ -4,6 +4,7 @@
 ;; My emacs configuration files. This is run in after-init-hook
 
 ;;; Code:
+
 ;; load my color theme
 ;;(load-theme 'hc-zenburn)
 ;; (load-theme 'cyberpunk t)
@@ -71,7 +72,7 @@
 ;; how to do backup files. Save it in $HOME/.saves, never on same directory of file
 (setq
  backup-by-copying t      ; don't clobber symlinks
- backup-directory-alist '(("." . "~/.saves"))    ; don't litter my fs tree
+ backup-directory-alist '((".*" . "~/.saves"))    ; don't litter my fs tree
  delete-old-versions t
  kept-new-versions 6
  kept-old-versions 2
@@ -162,8 +163,30 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+(require 'windmove)
 (windmove-default-keybindings 'meta)
 (defvar windmove-wrap-around t)
+
+;; automatically save buffers associated with files on buffer switch
+;; and on windows switch
+(defadvice switch-to-buffer (before save-buffer-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice other-window (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-up (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-down (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-left (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-right (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+
+(defun save-all ()
+  (interactive)
+  (save-some-buffers t))
+
+(add-hook 'focus-out-hook 'save-all)
 
 ;; save history between sessions
 (savehist-mode 1)
@@ -301,6 +324,7 @@ This functions should be added to the hooks of major modes for programming."
 (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
 
 ;; enable projectile globaly
+(require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
 
@@ -310,7 +334,25 @@ This functions should be added to the hooks of major modes for programming."
 
 ;; enable rainbow-delimiters
 (require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+;; use SRGB colorspace
+(setq ns-use-srgb-colorspace t)
+
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
+;; org-mode configuration
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 (provide 'startup)
 ;;; startup.el ends here
