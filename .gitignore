@@ -9,3 +9,5 @@ ac-comphist.dat
 bookmarks
 projectile*
 tramp
+.python-environments/
+url
