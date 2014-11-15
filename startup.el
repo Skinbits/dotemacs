@@ -5,14 +5,35 @@
 
 ;;; Code:
 
-;; load my color theme
-;;(load-theme 'hc-zenburn)
-;; (load-theme 'cyberpunk t)
-(require 'moe-theme)
-(moe-dark)
-;; (load-theme 'grandshell t)
-;; (load-theme 'monokai)
+;; use SRGB colorspace
+;; (setq ns-use-srgb-colorspace t)
 
+;; load my color theme
+;; (require 'color-theme-sanityinc-tomorrow)
+;; (load-theme 'hc-zenburn)
+;; (load-theme 'cyberpunk t)
+;; (require 'powerline)
+;; (require 'moe-theme)
+;; (setq moe-theme-resize-markdown-title nil)
+;; (setq moe-theme-resize-org-title nil)
+;; (moe-theme-set-color 'orange)
+;; (moe-dark)
+;; (moe-light)
+
+;; Resize titles
+;; (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+;; (setq moe-theme-resize-org-title '(1.2 1.2 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
+;; (setq moe-theme-resize-rst-title '(2.0 1.7 1.5 1.3 1.1 1.0))
+
+;; (powerline-moe-theme)
+;; (powerline-default-theme)
+
+;; (load-theme 'grandshell t)
+(load-theme 'monokai t)
+(set-face-attribute 'region nil :background "#00a0a0")
+(add-hook 'focus-in-hook (lambda () (set-face-attribute 'region nil :background "#00a0a0")))
+
+;; (load-theme 'sanityinc-tomorrow-day)
 ;; M-x ido mode
 ;; (smex-initialize)
 ;; (global-set-key (kbd "M-x") 'smex)
@@ -159,29 +180,22 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 (setq scroll-preserve-screen-position 1)           ; Scroll without moving cursor
 
-;; move between buffers using meta and arrow keys
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
-
-(require 'windmove)
-(windmove-default-keybindings 'meta)
-(defvar windmove-wrap-around t)
-
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch
-(defadvice switch-to-buffer (before save-buffer-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice other-window (before other-window-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-up (before other-window-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-down (before other-window-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-left (before other-window-now activate)
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-right (before other-window-now activate)
-  (when buffer-file-name (save-buffer)))
+;; (defadvice switch-to-buffer (before save-buffer-now activate)
+;;   (when buffer-file-name (save-buffer)))
+;; (defadvice other-window (before other-window-now activate)
+;;   (when buffer-file-name (save-buffer)))
+;; (defadvice windmove-up (before other-window-now activate)
+;;   (when buffer-file-name (save-buffer)))
+;; (defadvice windmove-down (before other-window-now activate)
+;;   (when buffer-file-name (save-buffer)))
+;; (defadvice windmove-left (before other-window-now activate)
+;;   (when buffer-file-name (save-buffer)))
+;; (defadvice windmove-right (before other-window-now activate)
+;;   (when buffer-file-name (save-buffer)))
 
+;; Save all buffers
 (defun save-all ()
   (interactive)
   (save-some-buffers t))
@@ -222,7 +236,7 @@ This functions should be added to the hooks of major modes for programming."
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 
 ;; comment out a region with this keys
-;; (global-set-key (kbd "C-c C-c") 'comment-region)
+;; (global-set-key (kbd "C-c C-d") 'comment-region) 
 
 ;; when a file is draged to the frame, open it
 (define-key global-map [ns-drag-file] 'ns-find-file)
@@ -242,11 +256,11 @@ This functions should be added to the hooks of major modes for programming."
 	    (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; autocomplete config
-(require 'auto-complete-config)
-(ac-config-default)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
 
-(require 'auto-complete-c-headers)
-(add-to-list 'ac-sources 'ac-source-c-headers)
+;; (require 'auto-complete-c-headers)
+;; (add-to-list 'ac-sources 'ac-source-c-headers)
 
 ;; add new lines on end of buffer with C-n
 ;; (setq next-line-add-newlines t)
@@ -285,7 +299,8 @@ This functions should be added to the hooks of major modes for programming."
         (comment-or-uncomment-region (point) (mark))
       (comment-or-uncomment-region (mark) (point)))))
 
-(global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region-or-line)
+;;(global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region-or-line)
+(global-set-key (kbd "C-c C-c") 'comment-dwim)
 
 ;; "smart" home, i.e., home toggles b/w 1st non-blank character and 1st column
 (defun smart-beginning-of-line ()
@@ -300,7 +315,7 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
 (global-hl-line-mode 1)
-(set-face-background 'hl-line "#3D3D3D")
+(set-face-background 'hl-line "#2D2D2D")
 
 ;; enable flycheck for all buffers
 (global-flycheck-mode 1)
@@ -336,23 +351,62 @@ This functions should be added to the hooks of major modes for programming."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-;; use SRGB colorspace
-(setq ns-use-srgb-colorspace t)
-
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
 ;; org-mode configuration
+(require 'org)
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+(setq org-log-done 'time)
 
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (set-fill-column 120)
+	    (auto-fill-mode)))
+
+;; move between buffers using meta and arrow keys
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
+
+(require 'windmove)
+(windmove-default-keybindings 'meta)
+(setq org-replace-disputed-keys t)
+
+(defvar windmove-wrap-around t)
+;; Make windmove work in org-mode:
+;; (add-hook 'org-metatup-final-hook 'windmove-up)
+;; (add-hook 'org-metaleft-final-hook 'windmove-left)
+;; (add-hook 'org-metadown-final-hook 'windmove-down)
+;; (add-hook 'org-metaright-final-hook 'windmove-right)
+
+;; Python programming
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
+
+;; Agressive indentation mode
+;; (global-aggressive-indent-mode 1)
+
+;; Company-mode
+(global-company-mode 1)
+(global-set-key (kbd "C-.") 'company-complete)
+
+;; Resizes frame
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+
+;; Visual regex configuration
+(require 'visual-regexp)
+(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "C-c q") 'vr/query-replace)
+
+;; Magit main key
+(define-key global-map (kbd "C-c m") 'magit-status)
 
 (provide 'startup)
 ;;; startup.el ends here
