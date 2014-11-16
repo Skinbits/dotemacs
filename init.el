@@ -12,11 +12,29 @@
 ;; Show trailing white spaces
 (setq-default show-trailing-whitespace nil)
 
+;; Package init
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
+;; This will load startup.el after all packages are initialized
 (add-hook 'after-init-hook (lambda () (load "~/.emacs.d/startup.el")))
+
+;; activate installed packages
+(package-initialize)
+
+;; Check if all the packages I use are installed. Check variable package-activated-list.
+(defvar my-package-list '(2048-game ac-c-headers ac-helm popup auto-complete popup helm async ag s dash aggressive-indent names ample-theme anti-zenburn-theme auto-complete-c-headers auto-complete popup bookmark+ color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow color-theme-solarized color-theme company-anaconda anaconda-mode f dash s dash json-rpc company company-c-headers company company-go company company-inf-ruby inf-ruby company cyberpunk-theme debbugs dired+ dired-single f dash s fish-mode flymake-yaml flymake-easy gitconfig-mode go-projectile go-eldoc go-mode go-mode projectile pkg-info epl dash s grandshell-theme hc-zenburn-theme helm-flycheck helm async flycheck pkg-info epl dash dash helm-projectile projectile pkg-info epl dash s helm async helm-projectile-all s dash projectile pkg-info epl dash s helm async inf-ruby jedi python-environment deferred auto-complete popup epc ctable concurrent deferred jinja2-mode json-rpc magit-tramp magit git-rebase-mode git-commit-mode markdown-mode moe-theme monokai-theme multiple-cursors names nyan-mode org org-bullets popup powerline projectile pkg-info epl dash s python-environment deferred rainbow-delimiters s sass-mode haml-mode smartparens dash smex ssh-config-mode switch-window visual-regexp web-mode yaml-mode zenburn-theme))
+
+;; fetch the list of packages available
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package my-package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+;; done
 
 (toggle-frame-maximized)
 (custom-set-variables
