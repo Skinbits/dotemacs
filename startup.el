@@ -12,12 +12,11 @@
 ;; (require 'color-theme-sanityinc-tomorrow)
 ;; (load-theme 'hc-zenburn)
 ;; (load-theme 'cyberpunk t)
-;; (require 'powerline)
-;; (require 'moe-theme)
-;; (setq moe-theme-resize-markdown-title nil)
-;; (setq moe-theme-resize-org-title nil)
-;; (moe-theme-set-color 'orange)
-;; (moe-dark)
+(require 'powerline)			
+(require 'moe-theme)
+(setq moe-theme-resize-markdown-title nil)
+(setq moe-theme-resize-org-title nil)
+(moe-dark)
 ;; (moe-light)
 
 ;; Resize titles
@@ -25,13 +24,20 @@
 ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 ;; (setq moe-theme-resize-rst-title '(2.0 1.7 1.5 1.3 1.1 1.0))
 
-;; (powerline-moe-theme)
+(powerline-moe-theme)
+(moe-theme-set-color 'w/b)
+
+;; (setq )(magit-diff-add ((,class ))
+;;   `(magit-diff-del ((,class (:foreground ,red-0 :background nil :bold t))))
 ;; (powerline-default-theme)
 
 ;; (load-theme 'grandshell t)
-(load-theme 'monokai t)
-(set-face-attribute 'region nil :background "#00a0a0")
-(add-hook 'focus-in-hook (lambda () (set-face-attribute 'region nil :background "#00a0a0")))
+;; (load-theme 'monokai t)
+;; (set-face-attribute 'region nil :background "#00a0a0")
+;; (add-hook 'focus-in-hook (lambda () (set-face-attribute 'region nil :background "#00a0a0")))
+
+;; (load-theme 'zenburn t)
+;; (load-theme 'ample t) ;; this looks very good
 
 ;; (load-theme 'sanityinc-tomorrow-day)
 ;; M-x ido mode
