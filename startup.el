@@ -58,7 +58,7 @@
 
 ;;; Set the type of SQL to postgres, the main database that I use
 ;; (add-hook 'sql-mode-load-hook
-;;           (function (lambda () (sql-highlight-postgres-keywords))))
+          ;; (function (lambda () (sql-highlight-postgres-keywords))))
 
 ;; default to unified diffs
 (setq diff-switches "-u")
@@ -111,6 +111,7 @@
 (setq auto-save-interval 5000)
 (setq auto-save-timeout 30)
 
+;; TRAMP Setup
 (defvar tramp-persistency-file-name "~/.emacs.d/tramp")
 
 ;; Setup mac keyboard to my liking
@@ -130,9 +131,10 @@
 (setq dired-omit-files
       (concat dired-omit-files "\\|^\\..+$"))
 
-(require 'dired-single)
-
+;; (require 'dired-single)
 (setq dired-use-ls-dired t)
+
+(require 'dired+)
 
 ;; tab modes
 ;; to setup tabs
@@ -188,21 +190,22 @@
 
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch
-;; (defadvice switch-to-buffer (before save-buffer-now activate)
-;;   (when buffer-file-name (save-buffer)))
-;; (defadvice other-window (before other-window-now activate)
-;;   (when buffer-file-name (save-buffer)))
-;; (defadvice windmove-up (before other-window-now activate)
-;;   (when buffer-file-name (save-buffer)))
-;; (defadvice windmove-down (before other-window-now activate)
-;;   (when buffer-file-name (save-buffer)))
-;; (defadvice windmove-left (before other-window-now activate)
-;;   (when buffer-file-name (save-buffer)))
-;; (defadvice windmove-right (before other-window-now activate)
-;;   (when buffer-file-name (save-buffer)))
+(defadvice switch-to-buffer (before save-buffer-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice other-window (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-up (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-down (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-left (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-right (before other-window-now activate)
+  (when buffer-file-name (save-buffer)))
 
-;; Save all buffers
+;; Save all buffers when losing focus
 (defun save-all ()
+  "Save all files that are needeed."
   (interactive)
   (save-some-buffers t))
 
@@ -241,9 +244,6 @@ This functions should be added to the hooks of major modes for programming."
 
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 
-;; comment out a region with this keys
-;; (global-set-key (kbd "C-c C-d") 'comment-region) 
-
 ;; when a file is draged to the frame, open it
 (define-key global-map [ns-drag-file] 'ns-find-file)
 ;; hide emacs whith cmd-h
@@ -255,11 +255,11 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key (kbd "C-c d") 'dash-at-point)
 
 ;; auto-complete config
-(defvar ac-sources)
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (add-to-list 'ac-sources 'ac-source-c-headers)
-	    (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
+;; (defvar ac-sources)
+;; (add-hook 'c-mode-hook
+;; 	  (lambda ()
+;; 	    (add-to-list 'ac-sources 'ac-source-c-headers)
+;; 	    (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; autocomplete config
 ;; (require 'auto-complete-config)
@@ -283,12 +283,12 @@ This functions should be added to the hooks of major modes for programming."
 ;; display the function definition
 (which-function-mode)
 (defvar which-func-unknown "n/a") ;; display n/a instead of XXX
-(setq-default header-line-format
-              '((which-func-mode ("" which-func-format " "))))
-(setq mode-line-misc-info
-      ;; We remove Which Function Mode from the mode line, because it's mostly
-      ;; invisible here anyway.
-      (assq-delete-all 'which-func-mode mode-line-misc-info))
+;; (setq-default header-line-format
+;;               '((which-func-mode ("" which-func-format " "))))
+;; (setq mode-line-misc-info	       
+;;       ;; We remove Which Function Mode from the mode line, because it's mostly
+;;       ;; invisible here anyway.
+;;       (assq-delete-all 'which-func-mode mode-line-misc-info))
 
 (setq system-uses-terminfo nil)
 
@@ -305,8 +305,8 @@ This functions should be added to the hooks of major modes for programming."
         (comment-or-uncomment-region (point) (mark))
       (comment-or-uncomment-region (mark) (point)))))
 
-;;(global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region-or-line)
-(global-set-key (kbd "C-c C-c") 'comment-dwim)
+;; (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region-or-line)
+;; (global-set-key (kbd "C-c C-c") 'comment-dwim)
 
 ;; "smart" home, i.e., home toggles b/w 1st non-blank character and 1st column
 (defun smart-beginning-of-line ()
@@ -332,10 +332,6 @@ This functions should be added to the hooks of major modes for programming."
 ;; Helm configuration
 (load "~/.emacs.d/heml.el")
 
-;; (global-set-key (kbd "C-c h") 'helm-mini)
-;; (require 'helm-config)
-;; (helm-mode 1)
-
 (setq inhibit-splash-screen t)
 
 ;; ssh config mode
@@ -357,6 +353,7 @@ This functions should be added to the hooks of major modes for programming."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+;; Set the name of the frame to the name of the File with directory
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
@@ -370,9 +367,10 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key "\C-cb" 'org-iswitchb)
 (setq org-log-done 'time)
 
+;; When loading a org-mode file we force word warp
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    (set-fill-column 120)
+	    (set-fill-column 80)
 	    (auto-fill-mode)))
 
 ;; move between buffers using meta and arrow keys
@@ -412,7 +410,25 @@ This functions should be added to the hooks of major modes for programming."
 (define-key global-map (kbd "C-c q") 'vr/query-replace)
 
 ;; Magit main key
-(define-key global-map (kbd "C-c m") 'magit-status)
+(define-key global-map (kbd "C-c g") 'magit-status)
+
+;; multiple cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c C-v") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; switch window
+(global-set-key (kbd "C-x o") 'switch-window)
+
+;; Change to our font
+;; (set-frame-font "Inconsolata 11")
+;; (set-frame-font "Menlo 10")
+;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Menlo-light-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+
+(set-frame-font "-*-Source Code Pro-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 (provide 'startup)
 ;;; startup.el ends here
