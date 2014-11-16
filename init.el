@@ -2,6 +2,16 @@
 ;;; Commentary:
 ;; my Emacs configuration
 ;;; Code:
+
+;; My info
+(setq user-full-name "Pedro Semeano")
+
+;; Highlight tabulations
+(setq-default highlight-tabs t)
+
+;; Show trailing white spaces
+(setq-default show-trailing-whitespace nil)
+
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
