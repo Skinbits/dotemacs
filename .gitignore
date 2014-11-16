@@ -11,3 +11,7 @@ projectile*
 tramp
 .python-environments/
 url
+.DS_Store
+.mc-lists.el
+SessionDesktop.el
+
