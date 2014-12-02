@@ -12,21 +12,22 @@
 ;; (require 'color-theme-sanityinc-tomorrow)
 ;; (load-theme 'hc-zenburn)
 ;; (load-theme 'cyberpunk t)
-(require 'powerline)			
+(require 'powerline)
 (require 'moe-theme)
 (setq moe-theme-resize-markdown-title nil)
 (setq moe-theme-resize-org-title nil)
+(moe-theme-set-color 'yellow)
 (moe-dark)
 ;; (moe-light)
 
+;; (load-theme 'leuven t)
 ;; Resize titles
 ;; (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
 ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 ;; (setq moe-theme-resize-rst-title '(2.0 1.7 1.5 1.3 1.1 1.0))
 
 (powerline-moe-theme)
-(moe-theme-set-color 'w/b)
-
+(powerline-reset)
 ;; (setq )(magit-diff-add ((,class ))
 ;;   `(magit-diff-del ((,class (:foreground ,red-0 :background nil :bold t))))
 ;; (powerline-default-theme)
@@ -185,8 +186,14 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed 't) ;; accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(setq scroll-preserve-screen-position 1)           ; Scroll without moving cursor
+;; (setq scroll-step 1) ;; keyboard scroll one line at a time
+;; (setq scroll-preserve-screen-position 1)           ; Scroll without moving cursor
+
+(setq redisplay-dont-pause t
+      scroll-margin 1
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
 
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch
@@ -397,6 +404,7 @@ This functions should be added to the hooks of major modes for programming."
 ;; (global-aggressive-indent-mode 1)
 
 ;; Company-mode
+(require 'company)
 (global-company-mode 1)
 (global-set-key (kbd "C-.") 'company-complete)
 
@@ -426,9 +434,84 @@ This functions should be added to the hooks of major modes for programming."
 ;; (set-frame-font "Inconsolata 11")
 ;; (set-frame-font "Menlo 10")
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Inconsolata-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Menlo-light-normal-normal-*-*-*-*-*-m-0-iso10646-1")
 
-(set-frame-font "-*-Source Code Pro-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Menlo-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;;(set-frame-font "-*-Monaco-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Anonymous Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Droid Sans Mono-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Ubuntu Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
+;; (set-frame-font "-*-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+
+;; configure the shell
+(require 'shell)
+(setq explicit-shell-file-name "/usr/local/bin/zsh")
+(setq shell-file-name nil)
+
+(defvar explicit-zsh-args '("--noediting" "--login" "-i"))
+(setenv "SHELL" shell-file-name)
+(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+
+(global-set-key (kbd "C-c C-t") '(lambda ()
+				   (interactive)
+				   (ansi-term "/usr/local/bin/zsh")))
+
+;; ruby configuration
+(require 'ruby-mode)
+
+;; use flymake
+;; (require 'flymake-ruby)
+;; (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+
+;; avoid deep indentation
+(setq ruby-deep-indent-paren nil)
+
+;; Robe completion
+(require 'rvm)
+(require 'robe)
+(add-hook 'ruby-mode-hook 'robe-mode)
+
+(defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
+  "Activate corresponding ruby from rvm when using robe."
+  (rvm-activate-corresponding-ruby))
+
+;; add robe to company-mode
+(push 'company-robe company-backends)
+
+;; Now configure my keys
+(global-set-key (kbd "C-c r r") 'inf-ruby) ;; run inf-ruby
+(global-set-key (kbd "C-c r a") 'rvm-activate-corresponding-ruby) ;; activate correct ruby in rvm
+
+;; web-mode
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jinja2?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.scss?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.xml?\\'" . web-mode))
+
+(setq web-mode-engines-alist
+      '(("php"    . "\\.phtml\\'")
+        ("blade"  . "\\.blade\\.")
+	("jinja2" . "\\.jinja2\\."))
+      )
+
+;; helm-company
+(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-.") 'helm-company)
+     (define-key company-active-map (kbd "C-.") 'helm-company)))
 (provide 'startup)
 ;;; startup.el ends here

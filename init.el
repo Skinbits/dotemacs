@@ -24,7 +24,7 @@
 (package-initialize)
 
 ;; Check if all the packages I use are installed. Check variable package-activated-list.
-(defvar my-package-list '(2048-game ac-c-headers ac-helm popup auto-complete popup helm async ag s dash aggressive-indent names ample-theme anti-zenburn-theme auto-complete-c-headers auto-complete popup bookmark+ color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow color-theme-solarized color-theme company-anaconda anaconda-mode f dash s dash json-rpc company company-c-headers company company-go company company-inf-ruby inf-ruby company cyberpunk-theme debbugs dired+ dired-single f dash s fish-mode flymake-yaml flymake-easy gitconfig-mode go-projectile go-eldoc go-mode go-mode projectile pkg-info epl dash s grandshell-theme hc-zenburn-theme helm-flycheck helm async flycheck pkg-info epl dash dash helm-projectile projectile pkg-info epl dash s helm async helm-projectile-all s dash projectile pkg-info epl dash s helm async inf-ruby jedi python-environment deferred auto-complete popup epc ctable concurrent deferred jinja2-mode json-rpc magit-tramp magit git-rebase-mode git-commit-mode markdown-mode moe-theme monokai-theme multiple-cursors names nyan-mode org org-bullets popup powerline projectile pkg-info epl dash s python-environment deferred rainbow-delimiters s sass-mode haml-mode smartparens dash smex ssh-config-mode switch-window visual-regexp web-mode yaml-mode zenburn-theme))
+(defvar my-package-list '(2048-game ac-c-headers ac-helm popup auto-complete popup helm async ag s dash aggressive-indent names ample-theme anti-zenburn-theme auto-complete-c-headers auto-complete popup bookmark+ color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow color-theme-solarized color-theme company-anaconda anaconda-mode f dash s dash json-rpc company company-c-headers company company-go company company-inf-ruby inf-ruby company cyberpunk-theme debbugs dired+ dired-single f dash s fish-mode flymake-yaml flymake-easy gitconfig-mode go-projectile go-eldoc go-mode go-mode projectile pkg-info epl dash s grandshell-theme hc-zenburn-theme helm-flycheck helm async flycheck pkg-info epl dash dash helm-projectile projectile pkg-info epl dash s helm async helm-projectile-all s dash projectile pkg-info epl dash s helm async inf-ruby jedi python-environment deferred auto-complete popup epc ctable concurrent deferred jinja2-mode json-rpc magit-tramp magit git-rebase-mode git-commit-mode markdown-mode moe-theme monokai-theme multiple-cursors names nyan-mode org org-bullets popup powerline projectile pkg-info epl dash s python-environment deferred rainbow-delimiters s sass-mode haml-mode smartparens dash smex ssh-config-mode switch-window visual-regexp web-mode yaml-mode zenburn-theme robe))
 
 ;; fetch the list of packages available
 (unless package-archive-contents
@@ -54,6 +54,7 @@
     ("49eea2857afb24808915643b1b5bd093eefb35424c758f502e98a03d0d3df4b1" "b7d8113de2f7d9a3cf42335d8eed8415b5a417e7f6382e59076f9f4ae4fa4cee" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
  '(diredp-hide-details-initially-flag nil)
  '(fci-rule-color "#49483E")
+ '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-tail-colors
    (quote
@@ -65,10 +66,12 @@
      ("#A45E0A" . 70)
      ("#A41F99" . 85)
      ("#49483E" . 100))))
+ '(magit-diff-options (quote ("--ignore-space-change" "--minimal")))
  '(org-agenda-files (quote ("~/Projects/pets.org")))
  '(org-hide-leading-stars nil)
  '(org-pretty-entities t)
  '(org-src-fontify-natively t)
+ '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(syslog-debug-face
