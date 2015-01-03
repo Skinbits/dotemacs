@@ -12,13 +12,16 @@
 ;; (require 'color-theme-sanityinc-tomorrow)
 ;; (load-theme 'hc-zenburn)
 ;; (load-theme 'cyberpunk t)
-(require 'powerline)
-(require 'moe-theme)
-(setq moe-theme-resize-markdown-title nil)
-(setq moe-theme-resize-org-title nil)
-(moe-theme-set-color 'yellow)
-(moe-dark)
+
+;; (require 'powerline)
+;; (require 'moe-theme)
+;; (setq moe-theme-resize-markdown-title nil)
+;; (setq moe-theme-resize-org-title nil)
+;; (moe-theme-set-color 'yellow)
+;; (moe-dark)
 ;; (moe-light)
+
+(load-theme 'monokai t)
 
 ;; (load-theme 'leuven t)
 ;; Resize titles
@@ -26,8 +29,8 @@
 ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 ;; (setq moe-theme-resize-rst-title '(2.0 1.7 1.5 1.3 1.1 1.0))
 
-(powerline-moe-theme)
-(powerline-reset)
+;; (powerline-moe-theme)
+;; (powerline-reset)
 ;; (setq )(magit-diff-add ((,class ))
 ;;   `(magit-diff-del ((,class (:foreground ,red-0 :background nil :bold t))))
 ;; (powerline-default-theme)
@@ -87,7 +90,7 @@
 ;; (add-hook 'auto-save-hook 'my-desktop-save)
 
 ;; Change the face to something smaller
-(set-face-attribute 'default nil :font "Menlo-11")
+;; (set-face-attribute 'default nil :font "Menlo-11")
 
 ;; provides line number in the sink
 (global-linum-mode 1)
@@ -353,8 +356,9 @@ This functions should be added to the hooks of major modes for programming."
 (setq projectile-enable-caching t)
 
 ;; enable smartparens
-(require 'smartparens-config)
-(smartparens-global-mode)
+;; (require 'smartparens-config)
+;; (smartparens-global-mode)
+(electric-pair-mode 1)
 
 ;; enable rainbow-delimiters
 (require 'rainbow-delimiters)
@@ -444,9 +448,9 @@ This functions should be added to the hooks of major modes for programming."
 ;; (set-frame-font "-*-Anonymous Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Droid Sans Mono-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Ubuntu Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
-(set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
-;; (set-frame-font "-*-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 ;; configure the shell
 (require 'shell)
@@ -513,5 +517,38 @@ This functions should be added to the hooks of major modes for programming."
   '(progn
      (define-key company-mode-map (kbd "C-.") 'helm-company)
      (define-key company-active-map (kbd "C-.") 'helm-company)))
+
+;; ace-jump-mode
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+
+;; expand region
+(require 'expand-region)
+(global-set-key (kbd "C-+") 'er/expand-region)
+
+;; key chords
+(require 'key-chord)
+
+(key-chord-define-global "FF" 'find-file)
+(key-chord-define-global "jk" 'beginning-of-buffer)
+(key-chord-define-global "jj" 'ace-jump-mode)
+(key-chord-define-global "jl" 'ace-jump-line-mode)
+
+(key-chord-mode +1)
+
 (provide 'startup)
 ;;; startup.el ends here
