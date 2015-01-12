@@ -14,29 +14,21 @@
 
 ;; Package init
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
-
-;; This will load startup.el after all packages are initialized
-(add-hook 'after-init-hook (lambda () (load "~/.emacs.d/startup.el")))
+(setq package-enable-at-startup nil)
+(setq package-archives '(("melpa" . "http://melpa.org/packages/")))
 
 ;; activate installed packages
 (package-initialize)
 
-;; Check if all the packages I use are installed. Check variable package-activated-list.
-(defvar my-package-list '(2048-game ac-c-headers ac-helm popup auto-complete popup helm async ag s dash aggressive-indent names ample-theme anti-zenburn-theme auto-complete-c-headers auto-complete popup bookmark+ color-theme-sanityinc-solarized color-theme-sanityinc-tomorrow color-theme-solarized color-theme company-anaconda anaconda-mode f dash s dash json-rpc company company-c-headers company company-go company company-inf-ruby inf-ruby company cyberpunk-theme debbugs dired+ dired-single f dash s fish-mode flymake-yaml flymake-easy gitconfig-mode go-projectile go-eldoc go-mode go-mode projectile pkg-info epl dash s grandshell-theme hc-zenburn-theme helm-flycheck helm async flycheck pkg-info epl dash dash helm-projectile projectile pkg-info epl dash s helm async helm-projectile-all s dash projectile pkg-info epl dash s helm async inf-ruby jedi python-environment deferred auto-complete popup epc ctable concurrent deferred jinja2-mode json-rpc magit-tramp magit git-rebase-mode git-commit-mode markdown-mode moe-theme monokai-theme multiple-cursors names nyan-mode org org-bullets popup powerline projectile pkg-info epl dash s python-environment deferred rainbow-delimiters s sass-mode haml-mode smartparens dash smex ssh-config-mode switch-window visual-regexp web-mode yaml-mode zenburn-theme robe))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; fetch the list of packages available
-(unless package-archive-contents
-  (package-refresh-contents))
+(require 'use-package)
 
-; install the missing packages
-(dolist (package my-package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
-;; done
+;; This will load startup.el after all packages are initialized
+;; (add-hook 'after-init-hook (lambda () (load "~/.emacs.d/startup.el")))
 
-(toggle-frame-maximized)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -134,8 +126,482 @@
 (setq line-spacing 0.06)
 (put 'downcase-region 'disabled nil)
 
-(require 'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
+;; Emacs configuration
+;; configure encoding system
+(prefer-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+(setq buffer-file-coding-system 'utf-8)
+
+;; maximum decoration for faces
+(setq font-lock-maximum-decoration t)
+
+;;; Set the type of SQL to postgres, the main database that I use
+;; (add-hook 'sql-mode-load-hook
+          ;; (function (lambda () (sql-highlight-postgres-keywords))))
+
+;; default to unified diffs
+(setq diff-switches "-u")
+
+;; always end a file with a newline
+(setq require-final-newline t)
+
+;; setup bookmark system
+(defvar bookmark-default-file "~/.emacs.d/bookmarks")
+(defvar bookmark-save-flag 1)
+
+;; how to do backup files. Save it in $HOME/.saves, never on same directory of file
+(setq
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist '((".*" . "~/.saves"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)               ; use versioned backups
+
+;; (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+(setq auto-save-interval 5000)
+(setq auto-save-timeout 30)
+
+;; TRAMP Setup
+(defvar tramp-persistency-file-name "~/.emacs.d/tramp")
+
+;; Setup mac keyboard to my liking
+(defvar mac-option-key-is-meta t)
+(defvar mac-pass-command-to-system t)
+(defvar mac-pass-control-to-system t)
+(setq mac-command-modifier 'meta
+      mac-option-modifier nil)
+
+;; delete tab, not converting to space
+(defvar backward-delete-char-untabify 'nil)
+
+(require 'dired-x)
+(setq-default dired-omit-files-p t) ; this is buffer-local variable
+(setq dired-omit-files
+      (concat dired-omit-files "\\|^\\..+$"))
+(setq dired-use-ls-dired t)
+
+;; tab modes
+;; to setup tabs
+(defvar c-basic-indent 2)
+(setq tab-width 2)
+(defvar default-tab-width 2)
+(setq standard-indent 2)
+(setq require-final-newline t)
+(defvar c-basic-offset 2)
+(setq indent-tabs-mode nil)
+; (setq tab-stop-list '((4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80)))
+
+(add-hook 'c-mode-hook
+          '(lambda()
+             (setq c-basic-offset 4)
+             (setq tab-width 4)
+             )
+          )
+
+(add-hook 'cc-mode-hook
+          '(lambda()
+             (setq c-basic-offset 4)
+             (setq tab-width 4)
+             )
+          )
+
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (setq tab-width 4)
+	    (defvar python-indent 4)
+	    ))
+
+(add-hook 'fundamental-mode-hook
+          '(lambda()
+             (setq indent-tabs-mode nil)
+             )
+          )
+
+(add-hook 'javascript-ide-mode-hook
+          '(lambda()
+             (setq indent-tabs-mode nil)
+             )
+          )
+
+;; Use "y or n" for answers instead of complete words "yes or no"
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed 't) ;; accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+;; (setq scroll-step 1) ;; keyboard scroll one line at a time
+;; (setq scroll-preserve-screen-position 1)           ; Scroll without moving cursor
+
+(setq redisplay-dont-pause t
+      scroll-margin 1
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+
+;; automatically save buffers associated with files on buffer switch
+;; and on windows switch
+(defadvice switch-to-buffer (before save-buffer-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer))
+  )
+(defadvice other-window (before other-window-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-up (before other-window-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-down (before other-window-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-left (before other-window-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer)))
+(defadvice windmove-right (before other-window-now activate)
+  "Save all buffers when changing window."
+  (when buffer-file-name (save-buffer)))
+
+;; Save all buffers when losing focus
+(defun save-all ()
+  "Save all files that are needeed."
+  (interactive)
+  (save-some-buffers t))
+
+(add-hook 'focus-out-hook 'save-all)
+
+;; save history between sessions
+(savehist-mode 1)
+(defvar savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(defvar savehist-file "~/.emacs.d/tmp/savehist")
+
+;; sane defaults to home and end
+(global-set-key (kbd "<home>") 'beginning-of-line)
+(global-set-key (kbd "<end>") 'end-of-line)
+
+;; set C style editing
+(if (>= emacs-major-version 20)
+    (add-hook 'c-mode-hook '(lambda () (c-set-style "linux")))
+  (add-hook 'c-mode-hook '(lambda () (set-c-style "linux"))))
+
+(if (>= emacs-major-version 20)
+    (add-hook 'c++-mode-hook '(lambda () (c-set-style "linux")))
+  (add-hook 'c++-mode-hook '(lambda () (set-c-style "linux"))))
+
+;; move between subwords in variables names in CamelCase
+;; enable for all programming modes
+(add-hook 'prog-mode-hook 'subword-mode)
+
+;; Display with different colors the commentary for fixes and todos
+(defun font-lock-comment-annotations ()
+  "Highlight a bunch of well known comment annotations.
+
+This functions should be added to the hooks of major modes for programming."
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 font-lock-warning-face t))))
+
+(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+
+;; when a file is draged to the frame, open it
+(define-key global-map [ns-drag-file] 'ns-find-file)
+;; hide emacs whith cmd-h
+(global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+;; hide others with cmd-alt-h
+(global-set-key (kbd "M-A-h") 'ns-do-hide-others)
+
+;; call dash CTRL-C d
+(global-set-key (kbd "C-c d") 'dash-at-point)
+
+;; change exec path to use /usr/local/bin before everything
+(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+(setq exec-path (append '("/usr/local/bin") exec-path))
+
+(when (eq system-type 'darwin)
+  (require 'ls-lisp)
+  (defvar ls-lisp-use-insert-directory-program nil)
+)
+
+;; display the function definition
+(which-function-mode)
+(defvar which-func-unknown "n/a") ;; display n/a instead of XXX
+
+(setq system-uses-terminfo nil)
+
+;; "smart" home, i.e., home toggles b/w 1st non-blank character and 1st column
+(defun smart-beginning-of-line ()
+  "Move point to first non-whitespace character or 'beginning-of-line'."
+  (interactive "^") ; Use (interactive "^") in Emacs 23 to make shift-select work
+  (let ((oldpos (point)))
+    (back-to-indentation)
+    (and (= oldpos (point))
+         (beginning-of-line))))
+
+(global-set-key [home] 'smart-beginning-of-line)
+(global-set-key (kbd "C-a") 'smart-beginning-of-line)
+
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#2D2D2D")
+
+;; turn off toolbar
+(tool-bar-mode -1)
+
+(setq inhibit-splash-screen t)
+
+;; Set the name of the frame to the name of the File with directory
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
+;; Resizes frame
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+
+(global-set-key (kbd "C-x o") 'switch-window)
+;; Packages configuration
+(use-package ibuffer
+  :ensure t
+  :bind (("C-x C-b" . ibuffer-other-window)))
+
+(use-package monokai-theme
+  :ensure t
+  :config (load-theme 'monokai t)
+  :init (set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1"))
+
+(use-package desktop
+  :config
+  (desktop-save-mode 1)
+  (setq desktop-save t)
+  (setq desktop-dirname "~/.emacs.d")
+  (setq desktop-base-file-name "emacs-desktop")
+  (desktop-read))
+
+(use-package hlinum
+  :ensure t
+  :config
+  (hlinum-activate)
+  (global-linum-mode 1)
+  (set-variable 'linum-format " %4d "))
+
+(use-package dired+
+  :ensure t
+)
+
+(use-package flycheck
+  :ensure t
+  :config
+  ;; enable flycheck for all buffers
+  (global-flycheck-mode 1)
+  )
+
+(use-package helm
+  :ensure t
+  :config
+  (load "~/.emacs.d/heml.el")
+  )
+
+(use-package ssh-config-mode
+  :ensure t
+  :config
+  (autoload 'ssh-config-mode "ssh-config-mode" t)
+  (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
+  (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
+  (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
+  )
+
+(use-package projectile
+  :config
+  (projectile-global-mode)
+  (setq projectile-enable-caching t)
+  )
+
+;; enable smartparens
+(use-package smartparens
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode)
+  )
+
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  )
+
+;; org-mode configuration
+(use-package org
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda)
+  ("C-c b" . org-iswitchb)
+  :config
+  (setq org-log-done 'time)
+  (setq org-replace-disputed-keys t)
+  ;; When loading a org-mode file we force word warp
+  (add-hook 'org-mode-hook
+	    (lambda ()
+	      (set-fill-column 80)
+	      (auto-fill-mode)))
+  )
+
+;; move between buffers using meta and arrow keys
+(use-package windmove
+  :config
+  (windmove-default-keybindings 'meta)
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+  (defvar windmove-wrap-around t)
+)
+
+;; Python programming
+(use-package jedi
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+  )
+
+;; Company-mode
+(use-package company
+  :ensure t
+  :bind ("C-." . company-complete)
+  :config
+  (global-company-mode 1)
+  (progn
+    (define-key company-mode-map (kbd "C-.") 'helm-company)
+    (define-key company-active-map (kbd "C-.") 'helm-company))
+)
+
+(use-package visual-regexp
+  :ensure t
+  :config
+  (define-key global-map (kbd "C-c r") 'vr/replace)
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+  )
+
+(use-package magit
+  :ensure t
+  :bind ("C-c g" . magit-status)
+  )
+
+(use-package shell
+  :config
+  (setq explicit-shell-file-name "/usr/local/bin/zsh")
+  (setq shell-file-name nil)
+  (defvar explicit-zsh-args '("--noediting" "--login" "-i"))
+  (setenv "SHELL" shell-file-name)
+  (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+
+  (global-set-key (kbd "C-c C-t") '(lambda ()
+				     (interactive)
+				     (ansi-term "/usr/local/bin/zsh")))
+  )
+
+(use-package ruby-mode
+  :ensure t
+  :config
+  ;; avoid deep indentation
+  (setq ruby-deep-indent-paren nil)
+  )
+
+(use-package rvm
+  :ensure t)
+
+(use-package robe
+  :ensure t
+  :bind
+  ("C-c i" . inf-ruby)
+  ("C-c a" . rvm-activate-corresponding-ruby)
+  :config
+  (add-hook 'ruby-mode-hook 'robe-mode)
+  (defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
+    "Activate corresponding ruby from rvm when using robe."
+    (rvm-activate-corresponding-ruby))
+  
+  ;; add robe to company-mode
+  (push 'company-robe company-backends)
+  )
+
+(use-package web-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jinja2?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.scss?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.xml?\\'" . web-mode))
+  
+  (setq web-mode-engines-alist
+	'(("php"    . "\\.phtml\\'")
+	  ("blade"  . "\\.blade\\.")
+	  ("jinja2" . "\\.jinja2\\."))
+	)
+  )
+
+
+(use-package ace-jump-mode
+  :ensure t
+  :bind
+  ("C-c SPC" . ace-jump-mode)
+  ("C-x SPC" . ace-jump-mode-pop-mark)
+  :config
+  (autoload
+    'ace-jump-mode
+    "ace-jump-mode"
+    "Emacs quick move minor mode"
+    t)
+  (autoload
+    'ace-jump-mode-pop-mark
+    "ace-jump-mode"
+    "Ace jump back:-)"
+    t)
+  (eval-after-load "ace-jump-mode"
+    '(ace-jump-mode-enable-mark-sync))
+  )
+
+(use-package expand-region
+  :ensure t
+  :bind ("C-+" . er/expand-region))
+
+
+(use-package key-chord
+  :config
+  (key-chord-define-global "FF" 'find-file)
+  (key-chord-define-global "jk" 'beginning-of-buffer)
+  (key-chord-define-global "jj" 'ace-jump-mode)
+  (key-chord-define-global "jl" 'ace-jump-line-mode)
+  (key-chord-mode +1))
+
+;; After packages init configuration
+
+;; Change to our font
+;; (set-frame-font "Inconsolata 11")
+;; (set-frame-font "Menlo 10")
+;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Inconsolata-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Menlo-light-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+
+;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Menlo-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;;(set-frame-font "-*-Monaco-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Anonymous Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Droid Sans Mono-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Ubuntu Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+
 
 (provide 'init)
 ;;; init.el ends here
