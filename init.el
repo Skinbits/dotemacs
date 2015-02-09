@@ -637,7 +637,7 @@ With negative prefix, apply to -N lines above."
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 
-(load-file 'secrets.el)
+(load-file "secrets.el")
 
 (provide 'init)
 ;;; init.el ends here
