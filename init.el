@@ -340,12 +340,6 @@ With negative prefix, apply to -N lines above."
 
 (setenv "GOPATH" "/Users/pedro/Projects/go/space")
 
-(use-package paradox
-  :init
-  (setq paradox-github-token "b9b60d27e4b2e92bf5aa54d11c4ce03a5681d6f7")
-  )
-
-
 ;; call dash CTRL-C d
 (use-package dash
   :bind ("C-c d" . dash-at-point))
@@ -643,7 +637,8 @@ With negative prefix, apply to -N lines above."
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 
+(load-file 'secrets.el)
+
 (provide 'init)
 ;;; init.el ends here
-
 
