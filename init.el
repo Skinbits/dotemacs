@@ -3,6 +3,10 @@
 ;; my Emacs configuration
 ;;; Code:
 
+;; create Messages buffer
+
+(messages-buffer)
+
 ;; My info
 (setq user-full-name "Pedro Semeano")
 
@@ -14,8 +18,11 @@
 
 ;; Package init
 (require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("melpa" . "http://melpa.org/packages/")))
+;; (setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/") t) ;; Not working at the moment. error tryint to access host
+;; (add-to-list 'package-archives
+;;              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 
 ;; activate installed packages
 (package-initialize)
@@ -42,11 +49,10 @@
  '(background-mode dark)
  '(column-number-mode t)
  '(compilation-message-face (quote default))
- '(cua-mode t nil (cua-base))
  '(cursor-color "#839496")
  '(custom-safe-themes
    (quote
-    ("4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "72407995e2f9932fda3347e44e8c3f29879c5ed88da71f06ba4887b0596959a4" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "4217c670c803e8a831797ccf51c7e6f3a9e102cb9345e3662cc449f4c194ed7d" "49eea2857afb24808915643b1b5bd093eefb35424c758f502e98a03d0d3df4b1" "b7d8113de2f7d9a3cf42335d8eed8415b5a417e7f6382e59076f9f4ae4fa4cee" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
+    ("1cd9defef2a98138c732728568b04043afd321eb802d25a254777de9b2463768" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "72407995e2f9932fda3347e44e8c3f29879c5ed88da71f06ba4887b0596959a4" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "4217c670c803e8a831797ccf51c7e6f3a9e102cb9345e3662cc449f4c194ed7d" "49eea2857afb24808915643b1b5bd093eefb35424c758f502e98a03d0d3df4b1" "b7d8113de2f7d9a3cf42335d8eed8415b5a417e7f6382e59076f9f4ae4fa4cee" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
  '(diredp-hide-details-initially-flag nil)
  '(fci-rule-color "#49483E")
  '(foreground-color "#839496")
@@ -68,6 +74,8 @@
  '(org-hide-leading-stars nil)
  '(org-pretty-entities t)
  '(org-src-fontify-natively t)
+ '(paradox-automatically-star nil)
+ '(paradox-github-token t)
  '(save-place t nil (saveplace))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -185,6 +193,7 @@
 
 (use-package dired-x
   :config
+  (message "loading direc-x")
   (setq-default dired-omit-files-p t) ; this is buffer-local variable
   (setq dired-omit-files
 	(concat dired-omit-files "\\|^\\..+$"))
@@ -255,28 +264,6 @@
       scroll-conservatively 10000
       scroll-preserve-screen-position 1)
 
-;; automatically save buffers associated with files on buffer switch
-;; and on windows switch
-(defadvice switch-to-buffer (before save-buffer-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer))
-  )
-(defadvice other-window (before other-window-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-up (before other-window-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-down (before other-window-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-left (before other-window-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer)))
-(defadvice windmove-right (before other-window-now activate)
-  "Save all buffers when changing window."
-  (when buffer-file-name (save-buffer)))
-
 ;; Save all buffers when losing focus
 (defun save-all ()
   "Save all files that are needeed."
@@ -341,8 +328,12 @@ With negative prefix, apply to -N lines above."
 (setenv "GOPATH" "/Users/pedro/Projects/go/space")
 
 ;; call dash CTRL-C d
-(use-package dash
-  :bind ("C-c d" . dash-at-point))
+(use-package dash-at-point
+  :ensure t
+  :bind ("C-c d" . dash-at-point)
+  :config
+  (message "loading dash-at-point")
+)
 
 ;; change exec path to use /usr/local/bin before everything
 (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
@@ -396,73 +387,83 @@ With negative prefix, apply to -N lines above."
 (add-to-list 'default-frame-alist '(fullscreen . fullheight))
 
 (global-set-key (kbd "C-x o") 'switch-window)
+
+(winner-mode t)
+
+;; (use-package paradox
+;;   :ensure t
+;;   :config
+;;   (message "Loading paradox")
+;;   )
+
+;; After packages init configuration
+
 ;; Packages configuration
 (use-package ibuffer
   :ensure t
-  :bind (("C-x C-b" . ibuffer-other-window)))
-
-(use-package monokai-theme
-  :ensure t
-  :config (load-theme 'monokai t)
-  ;; :init (set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1"))
+  :bind (("C-x C-b" . ibuffer-other-window))
+  :config
+    (message "loading ibuffer")
   )
 
-(use-package desktop
+(use-package hc-zenburn-theme
   :config
-  (desktop-save-mode 1)
-  (setq desktop-save t)
-  (setq desktop-dirname "~/.emacs.d")
-  (setq desktop-base-file-name "emacs-desktop")
-  (desktop-read))
+  (message "loading hc-zenburn")
+  (load-theme 'hc-zenburn)
+  )
+
+;; (use-package monokai-theme
+;;   :ensure t
+;;   :config (load-theme 'monokai t)
+;;   ;; :init (set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1"))
+;;   )
+
+(message "loading desktop")
+(require 'desktop)
+(desktop-save-mode 1)
+(setq desktop-dirname "~/.emacs.d")
+(setq desktop-base-file-name "emacs-desktop")
 
 (use-package hlinum
   :ensure t
   :config
+  (message "loading hlinum")
   (hlinum-activate)
   (global-linum-mode 1)
   (set-variable 'linum-format " %4d "))
-
-(use-package dired+
-  :ensure t
-)
 
 (use-package flycheck
   :ensure t
   :config
   ;; enable flycheck for all buffers
+  (message "loading flycheck")
   (global-flycheck-mode 1)
-  )
-
-(use-package helm
-  :ensure t
-  :config
-  (load "~/.emacs.d/heml.el")
   )
 
 (use-package ssh-config-mode
   :ensure t
   :config
+  (message "loading ssh-config-mode")
   (autoload 'ssh-config-mode "ssh-config-mode" t)
   (add-to-list 'auto-mode-alist '(".ssh/config\\'"  . ssh-config-mode))
   (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
   (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
   )
 
-(use-package projectile
-  :config
-  (projectile-global-mode)
-  (setq projectile-enable-caching t)
-  )
+
+(load "~/.emacs.d/helm.el")
 
 ;; enable smartparens
 (use-package smartparens
   :config
+  (message "loading smartparens")
   (require 'smartparens-config)
   (smartparens-global-mode)
   )
 
 (use-package rainbow-delimiters
   :config
+  (message "loading rainbow-delimiters")
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   )
 
@@ -474,18 +475,21 @@ With negative prefix, apply to -N lines above."
   ("C-c a" . org-agenda)
   ("C-c b" . org-iswitchb)
   :config
+  (message "loading org")
   (setq org-log-done 'time)
   (setq org-replace-disputed-keys t)
   ;; When loading a org-mode file we force word warp
   (add-hook 'org-mode-hook
-	    (lambda ()
-	      (set-fill-column 80)
-	      (auto-fill-mode)))
+      (lambda ()
+        (set-fill-column 80)
+        (auto-fill-mode)))
   )
+
 
 ;; move between buffers using meta and arrow keys
 (use-package windmove
   :config
+  (message "loading windmove")
   (windmove-default-keybindings 'meta)
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
@@ -500,19 +504,43 @@ With negative prefix, apply to -N lines above."
   (setq jedi:complete-on-dot t)
   )
 
-;; Company-mode
+;;  ----------------------
+(use-package anaconda-mode
+  :ensure t
+  :config
+  (message "loading anaconda-mode")
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  )
+
+;; ;; Company-mode
 (use-package company
   :ensure t
   :bind ("C-." . company-complete)
   :config
+  (message "loading company-mode")
   (global-company-mode 1)
 )
+
+(use-package company-anaconda
+  :ensure t
+  :config
+  (message "loading company-anaconda")
+  (add-to-list 'company-backends 'company-anaconda)
+  )
+
+;; (use-package perspective
+;;   :ensure t
+;;   :config
+;;   (message "loading perspective")
+;;   (persp-mode)
+;;   )
 
 ;; (global-key-binding (kbd "C-.") 'company-complete)
 
 (use-package visual-regexp
   :ensure t
   :config
+  (message "loading visual-regexp")
   (define-key global-map (kbd "C-c r") 'vr/replace)
   (define-key global-map (kbd "C-c q") 'vr/query-replace)
   )
@@ -520,10 +548,14 @@ With negative prefix, apply to -N lines above."
 (use-package magit
   :ensure t
   :bind ("C-c g" . magit-status)
+  :config
+    (message "loading magit")
   )
+
 
 (use-package shell
   :config
+  (message "loading shell")
   (setq explicit-shell-file-name "/usr/local/bin/zsh")
   (setq shell-file-name nil)
   (defvar explicit-zsh-args '("--noediting" "--login" "-i"))
@@ -531,19 +563,23 @@ With negative prefix, apply to -N lines above."
   (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
 
   (global-set-key (kbd "C-c C-t") '(lambda ()
-				     (interactive)
-				     (ansi-term "/usr/local/bin/zsh")))
+             (interactive)
+             (ansi-term "/usr/local/bin/zsh")))
   )
 
 (use-package ruby-mode
   :ensure t
   :config
+  (message "loading ruby-mode")
   ;; avoid deep indentation
   (setq ruby-deep-indent-paren nil)
   )
 
 (use-package rvm
-  :ensure t)
+  :ensure t
+  :config
+    (message "loading rvm")
+  )
 
 (use-package robe
   :ensure t
@@ -551,6 +587,7 @@ With negative prefix, apply to -N lines above."
   ("C-c i" . inf-ruby)
   ("C-c a" . rvm-activate-corresponding-ruby)
   :config
+  (message "loading robe")
   (add-hook 'ruby-mode-hook 'robe-mode)
   (defadvice inf-ruby-console-auto (before activate-rvm-for-robe activate)
     "Activate corresponding ruby from rvm when using robe."
@@ -562,6 +599,7 @@ With negative prefix, apply to -N lines above."
 
 (use-package web-mode
   :config
+  (message "loading web-mode")
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
@@ -574,20 +612,25 @@ With negative prefix, apply to -N lines above."
   (add-to-list 'auto-mode-alist '("\\.scss?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.xml?\\'" . web-mode))
   
-  (setq web-mode-engines-alist
-	'(("php"    . "\\.phtml\\'")
-	  ("blade"  . "\\.blade\\.")
-	  ("jinja2" . "\\.jinja2\\."))
-	)
+  (defvar web-mode-engines-alist
+    '(("php"    . "\\.phtml\\'")
+      ("blade"  . "\\.blade\\."))
+    )
   )
 
-
+(use-package jinja2-mode
+  :ensure t
+  :config
+  (message "loading jinja2-mode")
+  )
+  
 (use-package ace-jump-mode
   :ensure t
   :bind
   ("C-c SPC" . ace-jump-mode)
   ("C-x SPC" . ace-jump-mode-pop-mark)
   :config
+  (message "loading ace-jump-mode")
   (autoload
     'ace-jump-mode
     "ace-jump-mode"
@@ -604,11 +647,15 @@ With negative prefix, apply to -N lines above."
 
 (use-package expand-region
   :ensure t
-  :bind ("C-+" . er/expand-region))
+  :bind ("C-+" . er/expand-region)
+  :config
+    (message "loading expand-region")
+)
 
 
 (use-package key-chord
   :config
+  (message "loading key-chord")
   (key-chord-define-global "FF" 'find-file)
   (key-chord-define-global "jk" 'beginning-of-buffer)
   (key-chord-define-global "jj" 'ace-jump-mode)
@@ -616,9 +663,10 @@ With negative prefix, apply to -N lines above."
   (key-chord-mode +1))
 
 (use-package rust-mode
-  :ensure t)
-
-;; After packages init configuration
+  :ensure t
+  :config
+  (message "loading rust-mode")
+)
 
 ;; Change to our font
 ;; (set-frame-font "Inconsolata 11")
@@ -637,8 +685,8 @@ With negative prefix, apply to -N lines above."
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 
-(load-file "secrets.el")
+(load "~/.emacs.d/secrets.el")
 
+(message "Ended init")
 (provide 'init)
 ;;; init.el ends here
-
