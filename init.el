@@ -190,16 +190,6 @@
 ;; delete tab, not converting to space
 (defvar backward-delete-char-untabify 'nil)
 
-
-(use-package dired-x
-  :config
-  (message "loading direc-x")
-  (setq-default dired-omit-files-p t) ; this is buffer-local variable
-  (setq dired-omit-files
-	(concat dired-omit-files "\\|^\\..+$"))
-  (setq dired-use-ls-dired t)
-  )
-
 ;; tab modes
 ;; to setup tabs
 (defvar c-basic-indent 2)
@@ -398,7 +388,18 @@ With negative prefix, apply to -N lines above."
 
 ;; After packages init configuration
 
+(load "~/.emacs.d/helm.el")
+
 ;; Packages configuration
+(use-package dired-x
+  :config
+  (message "loading direc-x")
+  (setq-default dired-omit-files-p t) ; this is buffer-local variable
+  (setq dired-omit-files
+	(concat dired-omit-files "\\|^\\..+$"))
+  (setq dired-use-ls-dired t)
+  )
+
 (use-package ibuffer
   :ensure t
   :bind (("C-x C-b" . ibuffer-other-window))
@@ -449,9 +450,6 @@ With negative prefix, apply to -N lines above."
   (add-to-list 'auto-mode-alist '("sshd?_config\\'" . ssh-config-mode))
   (add-hook 'ssh-config-mode-hook 'turn-on-font-lock)
   )
-
-
-(load "~/.emacs.d/helm.el")
 
 ;; enable smartparens
 (use-package smartparens
@@ -528,6 +526,7 @@ With negative prefix, apply to -N lines above."
   (add-to-list 'company-backends 'company-anaconda)
   )
 
+;; This package is great. But it interferes with helm in strange ways. Do not use.
 ;; (use-package perspective
 ;;   :ensure t
 ;;   :config
@@ -557,7 +556,7 @@ With negative prefix, apply to -N lines above."
   :config
   (message "loading shell")
   (setq explicit-shell-file-name "/usr/local/bin/zsh")
-  (setq shell-file-name nil)
+  (setq shell-file-name "/usr/local/bin/zsh")
   (defvar explicit-zsh-args '("--noediting" "--login" "-i"))
   (setenv "SHELL" shell-file-name)
   (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)

@@ -26,10 +26,10 @@
 (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-(setq helm-M-x-fuzzy-match t)
+;; (setq helm-M-x-fuzzy-match t)
 
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
+;; (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-c h o") 'helm-occur)
 (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
@@ -74,8 +74,10 @@
       helm-imenu-fuzzy-match    t)
 
 
-(setq helm-autoresize-min-height 10)
-(helm-autoresize-mode nil) ;; no like it
+(setq helm-autoresize-min-height 40)
+(setq helm-autoresize-min-height 40)
+
+(helm-autoresize-mode t) ;; no like it
 
 (require 'projectile)
 
@@ -88,5 +90,6 @@
 
 (helm-mode 1)
 
+(message "helm loaded")
 (provide 'helm)
 ;;; helm.el ends here
