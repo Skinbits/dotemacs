@@ -248,8 +248,7 @@
 ;; (setq scroll-step 1) ;; keyboard scroll one line at a time
 ;; (setq scroll-preserve-screen-position 1)           ; Scroll without moving cursor
 
-(setq redisplay-dont-pause t
-      scroll-margin 1
+(setq scroll-margin 1
       scroll-step 1
       scroll-conservatively 10000
       scroll-preserve-screen-position 1)
@@ -380,6 +379,29 @@ With negative prefix, apply to -N lines above."
 
 (winner-mode t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ediff                                                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'ediff)
+;; don't start another frame
+;; this is done by default in preluse
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+;; put windows side by side
+(setq ediff-split-window-function (quote split-window-horizontally))
+;;revert windows on exit - needs winner mode
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+;; When displaying flycheck error list, create a window by splitting the current window
+;; with 20% size, reusable on bottom
+(add-to-list 'display-buffer-alist
+	     `(,(rx bos "*Flycheck errors*" eos)
+	       (display-buffer-reuse-window
+		display-buffer-below-selected)
+	       (reusable-frames . visible)
+	       (side            . bottom)
+	       (window-height   . 0.2)))
+
+
 ;; (use-package paradox
 ;;   :ensure t
 ;;   :config
@@ -393,7 +415,7 @@ With negative prefix, apply to -N lines above."
 ;; Packages configuration
 (use-package dired-x
   :config
-  (message "loading direc-x")
+  (message "loading dired-x")
   (setq-default dired-omit-files-p t) ; this is buffer-local variable
   (setq dired-omit-files
 	(concat dired-omit-files "\\|^\\..+$"))
@@ -407,17 +429,29 @@ With negative prefix, apply to -N lines above."
     (message "loading ibuffer")
   )
 
-(use-package hc-zenburn-theme
-  :config
-  (message "loading hc-zenburn")
-  (load-theme 'hc-zenburn)
-  )
+;; (use-package hc-zenburn-theme
+;;   :config
+;;   (message "loading hc-zenburn")
+;;   (load-theme 'hc-zenburn)
+;;   )
 
 ;; (use-package monokai-theme
 ;;   :ensure t
 ;;   :config (load-theme 'monokai t)
 ;;   ;; :init (set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1"))
 ;;   )
+
+(declare-function moe-dark "moe-theme.el" nil)
+(use-package moe-theme
+  :config
+  ;; Resize titles (optional).
+  (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+  ;; (setq moe-theme-resize-org-title '(1.2 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+  ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2))
+  (setq moe-theme-resize-org-title nil)
+  (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
+  (moe-dark)
+  )
 
 (message "loading desktop")
 (require 'desktop)
@@ -430,8 +464,10 @@ With negative prefix, apply to -N lines above."
   :config
   (message "loading hlinum")
   (hlinum-activate)
-  (global-linum-mode 1)
-  (set-variable 'linum-format " %4d "))
+  ;; (global-linum-mode 1)		 ; global linnum mode
+  (add-hook 'prog-mode-hook 'linum-mode) ; Only for programming modes.
+  (set-variable 'linum-format " %4d ")
+  (setq linum-highlight-in-all-buffersp t))
 
 (use-package flycheck
   :ensure t
@@ -467,6 +503,7 @@ With negative prefix, apply to -N lines above."
 
 ;; org-mode configuration
 (use-package org
+  :ensure t
   :bind
   ("C-c l" . org-store-link)
   ("C-c c" . org-capture)
@@ -552,19 +589,16 @@ With negative prefix, apply to -N lines above."
   )
 
 
-(use-package shell
-  :config
-  (message "loading shell")
-  (setq explicit-shell-file-name "/usr/local/bin/zsh")
-  (setq shell-file-name "/usr/local/bin/zsh")
-  (defvar explicit-zsh-args '("--noediting" "--login" "-i"))
-  (setenv "SHELL" shell-file-name)
-  (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+(setq explicit-shell-file-name "/usr/local/bin/zsh")
+(setq shell-file-name "/usr/local/bin/zsh")
+(defvar explicit-zsh-args '("--noediting" "--login" "-i"))
+(setenv "SHELL" shell-file-name)
 
-  (global-set-key (kbd "C-c C-t") '(lambda ()
-             (interactive)
-             (ansi-term "/usr/local/bin/zsh")))
-  )
+(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+
+(global-set-key (kbd "C-c C-t") '(lambda ()
+				   (interactive)
+				   (ansi-term "/usr/local/bin/zsh")))
 
 (use-package ruby-mode
   :ensure t
@@ -623,26 +657,39 @@ With negative prefix, apply to -N lines above."
   (message "loading jinja2-mode")
   )
   
-(use-package ace-jump-mode
+;; (use-package ace-jump-mode
+;;   :ensure t
+;;   :bind
+;;   ("C-c SPC" . ace-jump-mode)
+;;   ("C-x SPC" . ace-jump-mode-pop-mark)
+;;   :config
+;;   (message "loading ace-jump-mode")
+;;   (autoload
+;;     'ace-jump-mode
+;;     "ace-jump-mode"
+;;     "Emacs quick move minor mode"
+;;     t)
+;;   (autoload
+;;     'ace-jump-mode-pop-mark
+;;     "ace-jump-mode"
+;;     "Ace jump back:-)"
+;;     t)
+;;   (eval-after-load "ace-jump-mode"
+;;     '(ace-jump-mode-enable-mark-sync))
+;;   )
+
+(use-package ace-window
   :ensure t
   :bind
-  ("C-c SPC" . ace-jump-mode)
-  ("C-x SPC" . ace-jump-mode-pop-mark)
+  ("C-c w" . ace-window)
+  ("C-c SPC" . avi-goto-word-1)
   :config
-  (message "loading ace-jump-mode")
-  (autoload
-    'ace-jump-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-  (autoload
-    'ace-jump-mode-pop-mark
-    "ace-jump-mode"
-    "Ace jump back:-)"
-    t)
-  (eval-after-load "ace-jump-mode"
-    '(ace-jump-mode-enable-mark-sync))
+  (message "Loading ace-window")
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (defvar avi-keys)
+  (setq avi-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
   )
+
 
 (use-package expand-region
   :ensure t
@@ -657,8 +704,8 @@ With negative prefix, apply to -N lines above."
   (message "loading key-chord")
   (key-chord-define-global "FF" 'find-file)
   (key-chord-define-global "jk" 'beginning-of-buffer)
-  (key-chord-define-global "jj" 'ace-jump-mode)
-  (key-chord-define-global "jl" 'ace-jump-line-mode)
+  (key-chord-define-global "jj" 'avi-goto-word-1)
+  (key-chord-define-global "jl" 'ace-window)
   (key-chord-mode +1))
 
 (use-package rust-mode
@@ -667,9 +714,22 @@ With negative prefix, apply to -N lines above."
   (message "loading rust-mode")
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; undo tree mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode 1)
+  ;; make ctrl-z undo
+  (global-set-key (kbd "C-z") 'undo)
+  ;; make ctrl-Z redo
+  (defalias 'redo 'undo-tree-redo)
+  (global-set-key (kbd "C-S-z") 'redo) ;; turn on everywhere
+  )
 ;; Change to our font
-;; (set-frame-font "Inconsolata 11")
-;; (set-frame-font "Menlo 10")
+;; (set-frame-font "Inconsolata 12")
+;; (set-frame-font "Menlo 11")
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Inconsolata-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
@@ -682,9 +742,11 @@ With negative prefix, apply to -N lines above."
 ;; (set-frame-font "-*-Droid Sans Mono-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Ubuntu Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-Source Code Pro-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 
 (load "~/.emacs.d/secrets.el")
+(put 'narrow-to-region 'disabled nil)
 
 (message "Ended init")
 (provide 'init)
