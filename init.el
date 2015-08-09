@@ -20,7 +20,7 @@
 (require 'package)
 ;; (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") t) ;; Not working at the moment. error tryint to access host
+             '("melpa" . "http://melpa.org/packages/"))
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 
@@ -50,9 +50,10 @@
  '(column-number-mode t)
  '(compilation-message-face (quote default))
  '(cursor-color "#839496")
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
  '(custom-safe-themes
    (quote
-    ("1cd9defef2a98138c732728568b04043afd321eb802d25a254777de9b2463768" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "72407995e2f9932fda3347e44e8c3f29879c5ed88da71f06ba4887b0596959a4" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "4217c670c803e8a831797ccf51c7e6f3a9e102cb9345e3662cc449f4c194ed7d" "49eea2857afb24808915643b1b5bd093eefb35424c758f502e98a03d0d3df4b1" "b7d8113de2f7d9a3cf42335d8eed8415b5a417e7f6382e59076f9f4ae4fa4cee" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
+    ("628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "e8a9dfa28c7c3ae126152210e3ccc3707eedae55bdc4b6d3e1bb3a85dfb4e670" "f81657b7209d76c9867fd5e4e655d5a570c24ff288130266e47ca602d0f0534f" "a444b2e10bedc64e4c7f312a737271f9a2f2542c67caa13b04d525196562bf38" "1cd9defef2a98138c732728568b04043afd321eb802d25a254777de9b2463768" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" "72407995e2f9932fda3347e44e8c3f29879c5ed88da71f06ba4887b0596959a4" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "4217c670c803e8a831797ccf51c7e6f3a9e102cb9345e3662cc449f4c194ed7d" "49eea2857afb24808915643b1b5bd093eefb35424c758f502e98a03d0d3df4b1" "b7d8113de2f7d9a3cf42335d8eed8415b5a417e7f6382e59076f9f4ae4fa4cee" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e194b1010c026b1401146e24a85e4b7c545276845fc38b8c4b371c8338172ad" "8f7e1668dd3a097964e6016c26d36822ab2e48fc3e9a3a2e2634224a5ca728c8" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "8fd393097ac6eabfcb172f656d781866beec05f27920a0691e8772aa2cdc7132" default)))
  '(diredp-hide-details-initially-flag nil)
  '(fci-rule-color "#49483E")
  '(foreground-color "#839496")
@@ -68,9 +69,10 @@
      ("#A45E0A" . 70)
      ("#A41F99" . 85)
      ("#49483E" . 100))))
+ '(magit-commit-arguments (quote ("--verbose")))
  '(magit-diff-options (quote ("--ignore-space-change" "--minimal")))
  '(magit-diff-use-overlays nil)
- '(org-agenda-files (quote ("~/Projects/pets.org")))
+ '(org-agenda-files (quote ("~/Projects/jornal.org")))
  '(org-hide-leading-stars nil)
  '(org-pretty-entities t)
  '(org-src-fontify-natively t)
@@ -184,6 +186,7 @@
 (defvar mac-option-key-is-meta t)
 (defvar mac-pass-command-to-system t)
 (defvar mac-pass-control-to-system t)
+(setq ns-function-modifier 'super)
 (setq mac-command-modifier 'meta
       mac-option-modifier nil)
 
@@ -219,6 +222,7 @@
 	  (lambda ()
 	    (setq tab-width 4)
 	    (defvar python-indent 4)
+	    (defvar python-indent-offset 4)
 	    ))
 
 (add-hook 'fundamental-mode-hook
@@ -379,6 +383,32 @@ With negative prefix, apply to -N lines above."
 
 (winner-mode t)
 
+;; Avoid duble uppercase letters
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+
+(add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+
+(define-minor-mode dubcaps-mode
+  "Toggle `dubcaps-mode'.  Converts words in DOuble CApitals to
+Single Capitals as you type."
+  :init-value nil
+  :lighter (" DC")
+  (if dubcaps-mode
+      (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
+    (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
+
+(add-hook 'text-mode-hook #'dubcaps-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ediff                                                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -413,20 +443,33 @@ With negative prefix, apply to -N lines above."
 (load "~/.emacs.d/helm.el")
 
 ;; Packages configuration
-(use-package dired-x
-  :config
-  (message "loading dired-x")
-  (setq-default dired-omit-files-p t) ; this is buffer-local variable
-  (setq dired-omit-files
-	(concat dired-omit-files "\\|^\\..+$"))
-  (setq dired-use-ls-dired t)
-  )
+(require 'dired-x)
+(add-hook 'dired-load-hook
+	  (lambda ()
+	    (load "dired-x")
+	    (setq-default dired-omit-files-p t) ; this is buffer-local variable
+	    (setq dired-omit-files
+		  (concat dired-omit-files "\\|^\\..+$"))
+	    (setq dired-use-ls-dired t)
+	    ))
+(add-hook 'dired-mode-hook
+	  (lambda ()
+	    ;; Set dired-x buffer-local variables here.  For example:
+	    ;; (dired-omit-mode 1)
+	    ))
+
 
 (use-package ibuffer
   :ensure t
   :bind (("C-x C-b" . ibuffer-other-window))
   :config
     (message "loading ibuffer")
+  )
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :config
+  (color-theme-sanityinc-tomorrow-eighties)
   )
 
 ;; (use-package hc-zenburn-theme
@@ -438,20 +481,19 @@ With negative prefix, apply to -N lines above."
 ;; (use-package monokai-theme
 ;;   :ensure t
 ;;   :config (load-theme 'monokai t)
-;;   ;; :init (set-frame-font "-*-DejaVu Sans Mono-light-normal-normal-*-10-*-*-*-m-0-iso10646-1"))
 ;;   )
 
-(declare-function moe-dark "moe-theme.el" nil)
-(use-package moe-theme
-  :config
-  ;; Resize titles (optional).
-  (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
-  ;; (setq moe-theme-resize-org-title '(1.2 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
-  ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2))
-  (setq moe-theme-resize-org-title nil)
-  (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
-  (moe-dark)
-  )
+;; (declare-function moe-dark "moe-theme.el" nil)
+;; (use-package moe-theme
+;;   :config
+;;   ;; Resize titles (optional).
+;;   (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+;;   ;; (setq moe-theme-resize-org-title '(1.2 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+;;   ;; (setq moe-theme-resize-org-title '(1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2 1.2))
+;;   (setq moe-theme-resize-org-title nil)
+;;   (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
+;;   (moe-dark)
+;;   )
 
 (message "loading desktop")
 (require 'desktop)
@@ -532,20 +574,21 @@ With negative prefix, apply to -N lines above."
 )
 
 ;; Python programming
-(use-package jedi
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-  )
+;; (use-package jedi
+;;   :ensure t
+;;   :config
+;;   (add-hook 'python-mode-hook 'jedi:setup)
+;;   (setq jedi:complete-on-dot t)
+;;   )
 
 ;;  ----------------------
-(use-package anaconda-mode
-  :ensure t
-  :config
-  (message "loading anaconda-mode")
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  )
+;; (use-package anaconda-mode
+;;   :ensure t
+;;   :config
+;;   (message "loading anaconda-mode")
+;;   (add-hook 'python-mode-hook 'anaconda-mode)
+;;   (add-hook 'python-mode-hook 'eldoc-mode)
+;;   )
 
 ;; ;; Company-mode
 (use-package company
@@ -556,12 +599,12 @@ With negative prefix, apply to -N lines above."
   (global-company-mode 1)
 )
 
-(use-package company-anaconda
-  :ensure t
-  :config
-  (message "loading company-anaconda")
-  (add-to-list 'company-backends 'company-anaconda)
-  )
+;; (use-package company-anaconda
+;;   :ensure t
+;;   :config
+;;   (message "loading company-anaconda")
+;;   (add-to-list 'company-backends 'company-anaconda)
+;;   )
 
 ;; This package is great. But it interferes with helm in strange ways. Do not use.
 ;; (use-package perspective
@@ -589,8 +632,8 @@ With negative prefix, apply to -N lines above."
   )
 
 
-(setq explicit-shell-file-name "/usr/local/bin/zsh")
-(setq shell-file-name "/usr/local/bin/zsh")
+(setq explicit-shell-file-name "/usr/local/bin/fish")
+(setq shell-file-name "/usr/local/bin/fish")
 (defvar explicit-zsh-args '("--noediting" "--login" "-i"))
 (setenv "SHELL" shell-file-name)
 
@@ -598,7 +641,7 @@ With negative prefix, apply to -N lines above."
 
 (global-set-key (kbd "C-c C-t") '(lambda ()
 				   (interactive)
-				   (ansi-term "/usr/local/bin/zsh")))
+				   (ansi-term "/usr/local/bin/fish")))
 
 (use-package ruby-mode
   :ensure t
@@ -678,16 +721,13 @@ With negative prefix, apply to -N lines above."
 ;;     '(ace-jump-mode-enable-mark-sync))
 ;;   )
 
-(use-package ace-window
+(use-package avy
   :ensure t
   :bind
-  ("C-c w" . ace-window)
-  ("C-c SPC" . avi-goto-word-1)
+  ("C-S-w" . ace-window)
+  ("C-S-." . avy-goto-word-or-subword-1)
   :config
-  (message "Loading ace-window")
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (defvar avi-keys)
-  (setq avi-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
+  (message "Loading avy")
   )
 
 
@@ -704,8 +744,8 @@ With negative prefix, apply to -N lines above."
   (message "loading key-chord")
   (key-chord-define-global "FF" 'find-file)
   (key-chord-define-global "jk" 'beginning-of-buffer)
-  (key-chord-define-global "jj" 'avi-goto-word-1)
-  (key-chord-define-global "jl" 'ace-window)
+  (key-chord-define-global "jj" 'avy-goto-word-or-subword-1)
+  (key-chord-define-global "jl" 'avy-goto-line)
   (key-chord-mode +1))
 
 (use-package rust-mode
@@ -727,6 +767,46 @@ With negative prefix, apply to -N lines above."
   (defalias 'redo 'undo-tree-redo)
   (global-set-key (kbd "C-S-z") 'redo) ;; turn on everywhere
   )
+
+(use-package neotree
+  :ensure t
+  )
+
+(use-package anzu
+  :ensure t
+  :bind
+   ("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp)
+  :config
+  (global-anzu-mode +1)
+  )
+
+(use-package ranger
+  :ensure t
+  )
+
+(use-package comment-dwim-2
+  :ensure t
+  :bind ("C-;" . comment-dwim-2)
+  )
+
+(use-package hydra
+  :ensure t
+  :config
+  (load "~/.emacs.d/hydras.el")
+  )
+
+;; This is not working correctly
+(use-package helm-rails
+  :ensure t
+  :bind
+  ("s-t" . helm-rails-controllers)
+  ("s-y" . helm-rails-models)
+  ("s-u" . helm-rails-views)
+  ("s-i" . helm-rails-specs)
+  ("s-o" . helm-rails-all)
+  )
+
 ;; Change to our font
 ;; (set-frame-font "Inconsolata 12")
 ;; (set-frame-font "Menlo 11")
@@ -736,13 +816,13 @@ With negative prefix, apply to -N lines above."
 ;; (set-frame-font "-*-Menlo-light-normal-normal-*-*-*-*-*-m-0-iso10646-1")
 
 ;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
-;; (set-frame-font "-*-Menlo-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+(set-frame-font "-*-Menlo-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;;(set-frame-font "-*-Monaco-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Anonymous Pro-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Droid Sans Mono-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Ubuntu Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
 ;; (set-frame-font "-*-Source Code Pro-light-normal-normal-*-10-*-*-*-m-0-iso10646-1")
-(set-frame-font "-*-Source Code Pro-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
+;; (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-10-*-*-*-m-0-iso10646-1")
 
 
 (load "~/.emacs.d/secrets.el")
