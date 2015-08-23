@@ -466,10 +466,22 @@ Single Capitals as you type."
     (message "loading ibuffer")
   )
 
-(use-package color-theme-sanityinc-tomorrow
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :config
+;;   (color-theme-sanityinc-tomorrow-eighties)
+;;   )
+
+;; (use-package material-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'material t)
+;;   )
+
+(use-package darktooth-theme
   :ensure t
   :config
-  (color-theme-sanityinc-tomorrow-eighties)
+  (load-theme 'darktooth t)
   )
 
 ;; (use-package hc-zenburn-theme
